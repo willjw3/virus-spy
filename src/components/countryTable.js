@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Card from "../components/card"
 import CoronaData from "../corona.json"
 import '../styles/country-table.scss';
@@ -23,6 +23,7 @@ function CountryTable() {
   }
   const hideDataCard = () => {
       setShow(false)
+      setLocation("")
   }
   const submitHandler = async(e) => {
       e.preventDefault()
@@ -39,8 +40,9 @@ function CountryTable() {
       })
       showDataCard()
       setSearchTerm("")
-   
+      
   }
+
   console.log(searchTerm)
   return (
     <div className="country-table">
