@@ -45,7 +45,7 @@ async function scraper() {
         //console.log(data)
         let dataList = JSON.stringify(data)
         fs.writeFileSync("src/corona.json", dataList)
-        fs.writeFileSync("src/data/corona200317.json", dataList)
+        fs.writeFileSync("src/data/corona200318.json", dataList)
     }).catch(console.log("Faux-Error!"))
 }
 
