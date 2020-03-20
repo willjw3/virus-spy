@@ -58,15 +58,13 @@ function CountryTable() {
   }
   const submitProvinceHandler = async(e) => {
       e.preventDefault()
-      await CoronaData.forEach((item, index) => {
+      await CovidProvinceData.forEach((item, index) => {
           if (provinceSearchTerm === item.province.toLowerCase()) {
               setMessage("");
               setProvince(item.province);
               setCountry(item.country);
-              setUpdated(item.updated.split("T")[0])
               setTotalCases(item.confirmed);
               setTotalDeaths(item.deaths);
-              setRecovered(item.recovered);
           } else {
               setMessage("No data found for the search term you entered.")
           }
@@ -77,15 +75,12 @@ function CountryTable() {
   }
   const submitCountryHandler = async(e) => {
       e.preventDefault()
-      await CoronaData.forEach((item, index) => {
+      await CovidCountryData.forEach((item, index) => {
           if (countrySearchTerm === item.country.toLowerCase()) {
               setMessage("");
-              setProvince(item.province);
               setCountry(item.country);
-              setUpdated(item.updated.split("T")[0])
               setTotalCases(item.confirmed);
               setTotalDeaths(item.deaths);
-              setRecovered(item.recovered);
           } else {
               setMessage("No data found for the search term you entered.")
           }
@@ -131,10 +126,8 @@ function CountryTable() {
             {country && <div>
                 <h3>Province/State: {province ? province : "not given"}</h3>
                 <h3>Country: {country}</h3>
-                <p>Updated on {updated}</p>
                 <p>Total cases: {totalCases}</p>
                 <p>Total deaths: {totalDeaths}</p>
-                <p>Recovered: {recovered}</p>
             </div>
             }
             {!country && <div>{message}</div> }
