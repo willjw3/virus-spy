@@ -144,6 +144,7 @@ function CountryTable() {
         <p className="click-text" onClick={countryShowHandler}>Data by country</p>
         <p className="click-text" onClick={provinceShowHandler}>Data by province/state</p>
       </div>
+          <p className="date">Data for {new Date().getMonth() + 1}/{new Date().getDate() - 1}/{new Date().getFullYear()}</p>
       {countryShow && 
       <div>
         <div className="table-row">
