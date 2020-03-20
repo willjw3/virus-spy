@@ -56,6 +56,29 @@ color: red;
 border: .5px dashed white;
 }
 
+.search {
+    color: white;
+    display: flex;
+    justify-content: space-evenly;
+    width: 300px;
+    margin: auto;
+}
+.choose-data {
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    width: 500px;
+    margin: auto; 
+}
+.click-text {
+    color: dodgerblue;
+    text-decoration: underline;
+    cursor: pointer;
+    &:hover {
+        color: darkgray;
+    }
+}
+
 .form-group {
     display: flex;
     justify-content: space-between;

@@ -1,104 +1,209 @@
-import React, {useState, useEffect} from 'react';
-import Card from "../components/card"
-import CoronaData from "../corona.json"
+import React, {useState} from 'react';
+import Card from "../components/card";
+//import CoronaData from "../corona.json";
+import CoronaData from "../covid19.json"
+import CovidCountryData from "../data/country/covid19.json";
+import CovidProvinceData from "../data/province/covid19.json";
 import '../styles/country-table.scss';
 
 function CountryTable() {
-  //console.log(CoronaData)
-  const month = new Date().getMonth() + 1;
-  console.log(month)
-  const [searchTerm, setSearchTerm] = useState("")
-  const [location, setLocation] = useState("")
-  const [doublingDays, setDoublingDays] = useState("")
-  const [totalCases, setTotalCases] = useState("")
-  const [newCases, setNewCases] = useState("")
-  const [message, setMessage] = useState("")
-  const [show, setShow] = useState(false)
+  const [provinceSearchTerm, setProvinceSearchTerm] = useState("");
+  const [countrySearchTerm, setCountrySearchTerm] = useState("");
+  const [countrySearch, setCountrySearch] = useState(false);
+  const [provinceSearch, setProvinceSearch] = useState(false);
+  const [countryShow, setCountryShow] = useState(true);
+  const [provinceShow, setProvinceShow] = useState(true);
+  const [province, setProvince] = useState("");
+  const [country, setCountry] = useState("");
+  const [updated, setUpdated] = useState("");
+  const [totalCases, setTotalCases] = useState("");
+  const [totalDeaths, setTotalDeaths] = useState("");
+  //const [newCases, setNewCases] = useState("");
+  //const [newDeaths, setNewDeaths] = useState("");
+  const [recovered, setRecovered] = useState("");
+  const [message, setMessage] = useState("");
+  const [show, setShow] = useState(false);
 
-  const inputHandler = (e) => {
-    setSearchTerm(e.target.value.toLowerCase())
+  const provinceSearchHandler = () => {
+    setCountrySearch(false)
+    setProvinceSearch(true)
+  }
+  const countrySearchHandler = () => {
+    setProvinceSearch(false);
+    setCountrySearch(true);
+  }
+  const provinceHandler = (e) => {
+    setProvinceSearchTerm(e.target.value.toLowerCase())
+  }
+  const countryHandler = (e) => {
+    setCountrySearchTerm(e.target.value.toLowerCase())
+  }
+  const countryShowHandler = () => {
+    setProvinceShow(false);
+    setCountryShow(true);
+  }
+  const provinceShowHandler = () => {
+    setCountryShow(false);
+    setProvinceShow(true);
   }
   const showDataCard = () => {
       setShow(true)
   }
   const hideDataCard = () => {
-      setShow(false)
-      setLocation("")
+      setShow(false);
+      setProvince("");
+      setCountry("");
+      setCountrySearch(false);
+      setProvinceSearch(false);
   }
-  const submitHandler = async(e) => {
+  const submitProvinceHandler = async(e) => {
       e.preventDefault()
       await CoronaData.forEach((item, index) => {
-          if (searchTerm === item.location.toLowerCase()) {
-              setMessage("")
-              setLocation(item.location)
-              setDoublingDays(item.doubling_days)
-              setTotalCases(item.total_cases)
-              setNewCases(item.new_cases)
+          if (provinceSearchTerm === item.province.toLowerCase()) {
+              setMessage("");
+              setProvince(item.province);
+              setCountry(item.country);
+              setUpdated(item.updated.split("T")[0])
+              setTotalCases(item.confirmed);
+              setTotalDeaths(item.deaths);
+              setRecovered(item.recovered);
           } else {
               setMessage("No data found for the search term you entered.")
           }
       })
       showDataCard()
-      setSearchTerm("")
+      setProvinceSearchTerm("")
+      
+  }
+  const submitCountryHandler = async(e) => {
+      e.preventDefault()
+      await CoronaData.forEach((item, index) => {
+          if (countrySearchTerm === item.country.toLowerCase()) {
+              setMessage("");
+              setProvince(item.province);
+              setCountry(item.country);
+              setUpdated(item.updated.split("T")[0])
+              setTotalCases(item.confirmed);
+              setTotalDeaths(item.deaths);
+              setRecovered(item.recovered);
+          } else {
+              setMessage("No data found for the search term you entered.")
+          }
+      })
+      showDataCard()
+      setCountrySearchTerm("")
       
   }
 
-  console.log(searchTerm)
   return (
     <div className="country-table">
-        <form className="form-group" onSubmit={submitHandler}>
-            <label htmlFor="">Search By Country/Region</label>
-            <input 
-                type="text" 
-                value={searchTerm} 
-                placeholder="Enter country/region name"
-                onChange={inputHandler}
-            />
-            <button type="submit">Submit</button>
+      <div className="search">
+        <p>Search by:</p>
+        <p className="click-text" value={`province`} onClick={provinceSearchHandler}>province/state</p>
+        <p className="click-text" value={`country`} onClick={countrySearchHandler}>country</p>
+      </div>
+      {provinceSearch && 
+        <form className="form-group" onSubmit={submitProvinceHandler}>
+          <label htmlFor="">Search By Province/State</label>
+          <input 
+              type="text" 
+              value={provinceSearchTerm} 
+              placeholder="Enter province/state name"
+              onChange={provinceHandler}
+          />
+          <button type="submit">Submit</button>
         </form>
+      }
+      {countrySearch && 
+        <form className="form-group" onSubmit={submitCountryHandler}>
+          <label htmlFor="">Search By Country</label>
+          <input 
+              type="text" 
+              value={countrySearchTerm} 
+              placeholder="Enter country name"
+              onChange={countryHandler}
+          />
+          <button type="submit">Submit</button>
+        </form>
+      }
+
         <Card show={show} handleClose={hideDataCard}>
-            {location && <div>
-                <small>As of {new Date().getUTCMonth()+1}/{new Date().getDate()}</small>
-                <h3>Country/Region: {location}</h3>
-                <p>Cases doubled in {doublingDays}</p>
+            {country && <div>
+                <h3>Province/State: {province ? province : "not given"}</h3>
+                <h3>Country: {country}</h3>
+                <p>Updated on {updated}</p>
                 <p>Total cases: {totalCases}</p>
-                <p>New cases today: {newCases}</p>
+                <p>Total deaths: {totalDeaths}</p>
+                <p>Recovered: {recovered}</p>
             </div>
             }
-            {!location && <div>{message}</div> }
+            {!country && <div>{message}</div> }
             
         </Card>
-      <div className="table-row">
-        <h3 className="table-heading">Country/Region</h3>
-        <h3 className="table-heading">Total Case Doubling Time</h3>
-        <h3 className="table-heading">Total Cases</h3>
-        <h3 className="table-heading">New Cases</h3>
+      <div className="choose-data">
+        <p className="click-text" onClick={countryShowHandler}>Data by country</p>
+        <p className="click-text" onClick={provinceShowHandler}>Data by province/state</p>
       </div>
-      <hr/>
-      {CoronaData.map((country, i) => {
-        return (
-          <div className="row-wrap">
-            <div key={i} className="table-row">
-              <div className="data-wrap">
-                <p className="values">{country.location}</p>
+      {countryShow && 
+      <div>
+        <div className="table-row">
+          <h3 className="table-heading">Country</h3>
+          <h3 className="table-heading">Total Cases</h3>
+          <h3 className="table-heading">Total Deaths</h3>
+        </div>
+        <hr/>
+        {CovidCountryData.map((country, i) => {
+          return (
+            <div className="row-wrap">
+              <div key={i} className="table-row">
+                <div className="data-wrap">
+                  <p className="values">{country.country}</p>
+                </div>
+                <div className="data-wrap">
+                  <p className="values">{country.confirmed}</p>
+                </div>
+                <div className="data-wrap">
+                  <p className="values">{country.deaths}</p>
+                </div>
               </div>
-              <div className="data-wrap">
-                <small>Current total doubled in</small>
-                <p className="values">{country.doubling_days}</p>
+              <hr className="table-line"/>
+            </div>  
+          )
+        })}
+      </div>
+      }
+      {provinceShow && 
+      <div>
+        <div className="table-row">
+          <h3 className="table-heading">Province/State</h3>
+          <h3 className="table-heading">Country</h3>
+          <h3 className="table-heading">Total Cases</h3>
+          <h3 className="table-heading">Total Deaths</h3>
+        </div>
+        <hr/>
+        {CovidProvinceData.map((country, i) => {
+          return (
+            <div className="row-wrap">
+              <div key={i} className="table-row">
+                <div className="data-wrap">
+                  <p className="values">{country.province}</p>
+                </div>
+                <div className="data-wrap">
+                  <p className="values">{country.country}</p>
+                </div>
+                <div className="data-wrap">
+                  <p className="values">{country.confirmed}</p>
+                </div>
+                <div className="data-wrap">
+                  <p className="values">{country.deaths}</p>
+                </div>
               </div>
-              <div className="data-wrap">
-                <small>As of {new Date().getMonth() + 1}/{new Date().getUTCDate()} (UTC + 9 hrs : Tokyo)</small>
-                <p className="values">{country.total_cases}</p>
-              </div>
-              <div className="data-wrap">
-              <small>As of {new Date().getMonth() + 1}/{new Date().getUTCDate()} (UTC + 9 hrs : Tokyo)</small>
-                <p className="values">{country.new_cases}</p>
-              </div>
-            </div>
-            <hr className="table-line"/>
-          </div>  
-        )
-      })}
+              <hr className="table-line"/>
+            </div>  
+          )
+        })}
+      </div>
+      }
     </div>
   );
 }
