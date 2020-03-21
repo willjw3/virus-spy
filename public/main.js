@@ -3,7 +3,7 @@ const fetch = require("node-fetch");
 const fs = require("fs");
 
 //const url = "https://ourworldindata.org/coronavirus";
-const url = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-19-2020.csv";
+const url = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-20-2020.csv";
 
 const getAllData = async () => {
     let covid19Data = [];
@@ -51,7 +51,7 @@ const getAllData = async () => {
         
         covid19DataArray = await JSON.stringify(covid19Data);
         await fs.writeFileSync("src/covid19.json", covid19DataArray);  
-        await fs.writeFileSync("src/data/all/history/covid19200319.json", covid19DataArray);  
+        await fs.writeFileSync("src/data/all/history/covid19200320.json", covid19DataArray);  
     })
     return covid19Data
 }
@@ -130,7 +130,7 @@ const getCountryData = async() => {
     })
     countryDataArray = JSON.stringify(countryData);
     fs.writeFileSync("src/data/country/covid19.json", countryDataArray)    
-    fs.writeFileSync("src/data/country/history/covid19200319.json", countryDataArray)    
+    fs.writeFileSync("src/data/country/history/covid19200320.json", countryDataArray)    
 }
 
 const getProvinceData = async() => {
@@ -163,11 +163,17 @@ const getProvinceData = async() => {
     })
     provinceDataArray = JSON.stringify(provinceData);
     fs.writeFileSync("src/data/province/covid19.json", provinceDataArray)    
-    fs.writeFileSync("src/data/province/history/covid19200319.json", provinceDataArray)    
+    fs.writeFileSync("src/data/province/history/covid19200320.json", provinceDataArray)    
 }
+
+// const getWorldTotal = async() => {
+//     let total = await getAllData();
+
+// }
 
 getCountryData();
 getProvinceData();
+//getWorldTotal();
 
 //getAllData();
 // async function scraper() {
