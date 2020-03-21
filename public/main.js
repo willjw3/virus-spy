@@ -51,6 +51,7 @@ const getAllData = async () => {
         
         covid19DataArray = await JSON.stringify(covid19Data);
         await fs.writeFileSync("src/covid19.json", covid19DataArray);  
+        await fs.writeFileSync("src/data/all/history/covid19200319.json", covid19DataArray);  
     })
     return covid19Data
 }
