@@ -4,6 +4,7 @@ import Card from "../components/card";
 import CoronaData from "../covid19.json"
 import CovidCountryData from "../data/country/covid19.json";
 import CovidProvinceData from "../data/province/covid19.json";
+import WorldTotal from "../worldtotal.json"
 import '../styles/country-table.scss';
 
 function CountryTable() {
@@ -92,6 +93,10 @@ function CountryTable() {
 
   return (
     <div className="country-table">
+      <div className="totals">
+        <h3 className="world-total">Total Confirmed Cases Worldwide: <span className="total-number">{WorldTotal[0].totalConfirmedCases}</span></h3>
+        <h3 className="world-total">Total Deaths Worldwide: <span className="total-number">{WorldTotal[0].totalDeaths}</span></h3>
+      </div>
       <div className="search">
         <p>Search by:</p>
         <p className="click-text" value={`province`} onClick={provinceSearchHandler}>province/state</p>

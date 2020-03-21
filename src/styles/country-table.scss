@@ -67,7 +67,7 @@ border: .5px dashed white;
     color: white;
     display: flex;
     justify-content: space-between;
-    width: 500px;
+    width: 300px;
     margin: auto; 
 }
 .click-text {
@@ -82,7 +82,23 @@ border: .5px dashed white;
     text-align: center;
     color: white;
 }
-
+.totals {
+    display: flex;
+    justify-content: space-around;
+}
+.world-total {
+    color: darkgray;
+    font-family: Rubik;
+    font-weight: 300;
+    text-align: center;
+}
+.total-number {
+    font-size: 1.5rem;
+    color: red;
+    // background: rgb(29, 44, 2);
+    // padding: 3px 5px;
+    // border: 1px solid darkgray;
+}
 .form-group {
     display: flex;
     justify-content: space-between;
@@ -112,6 +128,10 @@ border: .5px dashed white;
     }
     .choose-data {
         width: 300px;
+    }
+    .world-total {
+        display: flex;
+        flex-direction: column;
     }
 }
 

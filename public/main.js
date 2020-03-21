@@ -166,14 +166,30 @@ const getProvinceData = async() => {
     fs.writeFileSync("src/data/province/history/covid19200320.json", provinceDataArray)    
 }
 
-// const getWorldTotal = async() => {
-//     let total = await getAllData();
+const getWorldTotal = async() => {
+    let total = await getAllData();
+    let worldData = []
+    let totalConfirmedCount = 0;
+    let totalDeathCount = 0;
+    for (let item of total) {
+        totalConfirmedCount = totalConfirmedCount + Number(item.confirmed)
+    };
+    for (let elem of total) {
+        totalDeathCount = totalDeathCount + Number(elem.deaths)
+    }
+    const worldTotal = {
+        totalConfirmedCases: totalConfirmedCount,
+        totalDeaths: totalDeathCount
+    }
+    worldData.push(worldTotal)
+    let worldDataArray = JSON.stringify(worldData)
+    fs.writeFileSync("src/worldtotal.json", worldDataArray)
+    fs.writeFileSync("src/data/world/history/worldtotal200320.json", worldDataArray)
+}
 
-// }
-
-getCountryData();
-getProvinceData();
-//getWorldTotal();
+// getCountryData();
+// getProvinceData();
+getWorldTotal();
 
 //getAllData();
 // async function scraper() {
