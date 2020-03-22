@@ -1,5 +1,4 @@
-import React, {useState} from "react"
-import CoronaData from "../corona.json"
+import React from "react"
 import "../styles/card.scss"
 
 const Card = ({handleClose, show, children}) => {

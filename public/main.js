@@ -50,7 +50,7 @@ const getAllData = async () => {
         }
         
         covid19DataArray = await JSON.stringify(covid19Data);
-        await fs.writeFileSync("src/covid19.json", covid19DataArray);  
+        await fs.writeFileSync("src/data/all/covid19.json", covid19DataArray);  
         await fs.writeFileSync("src/data/all/history/covid19200321.json", covid19DataArray);  
     })
     return covid19Data
@@ -177,7 +177,8 @@ const getWorldTotal = async() => {
     }
     const worldTotal = {
         totalConfirmedCases: totalConfirmedCount,
-        totalDeaths: totalDeathCount
+        totalDeaths: totalDeathCount,
+        date: `${new Date().getMonth() + 1}/${new Date().getDate()}/${new Date().getFullYear()}`
     }
     worldData.push(worldTotal)
     let worldDataArray = JSON.stringify(worldData)
