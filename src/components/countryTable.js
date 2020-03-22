@@ -1,7 +1,5 @@
 import React, {useState} from 'react';
 import Card from "../components/card";
-//import CoronaData from "../corona.json";
-import CoronaData from "../covid19.json"
 import CovidCountryData from "../data/country/covid19.json";
 import CovidProvinceData from "../data/province/covid19.json";
 import WorldTotal from "../data/world/worldtotal.json"
@@ -96,8 +94,14 @@ function CountryTable() {
   return (
     <div className="country-table">
       <div className="totals">
-        <h3 className="world-total">Total Confirmed Cases Worldwide: <span className="total-number">{WorldTotal[0].totalConfirmedCases}</span></h3>
-        <h3 className="world-total">Total Deaths Worldwide: <span className="total-number">{WorldTotal[0].totalDeaths}</span></h3>
+        <div className="totals-wrap">
+          <h3 className="world-total">Total Confirmed Cases Worldwide: <span className="total-number">{WorldTotal[0].totalConfirmedCases}</span></h3>
+          <small>{new Date().getMonth() + 1}/{new Date().getDate()}/{new Date().getFullYear()} (Tokyo: UTC + 9)</small>
+        </div>
+        <div className="totals-wrap">
+          <h3 className="world-total">Total Deaths Worldwide: <span className="total-number">{WorldTotal[0].totalDeaths}</span></h3>
+          <small>{new Date().getMonth() + 1}/{new Date().getDate()}/{new Date().getFullYear()} (Tokyo: UTC + 9)</small>
+        </div> 
       </div>
       <div className="search">
         <p>Search by:</p>
@@ -128,23 +132,22 @@ function CountryTable() {
           <button type="submit">Submit</button>
         </form>
       }
-
-        <Card show={show} handleClose={hideDataCard}>
-            {country && <div>
-                <h3>Province/State: {province ? province : "not given"}</h3>
-                <h3>Country: {country}</h3>
-                <p>Total cases: {totalCases}</p>
-                <p>Total deaths: {totalDeaths}</p>
-            </div>
-            }
-            {!country && <div>{message}</div> }
-            
-        </Card>
+      <Card show={show} handleClose={hideDataCard}>
+          {country && <div>
+              <h3>Province/State: {province ? province : "not given"}</h3>
+              <h3>Country: {country}</h3>
+              <p>Total cases: {totalCases}</p>
+              <p>Total deaths: {totalDeaths}</p>
+          </div>
+          }
+          {!country && <div>{message}</div> }
+          
+      </Card>
       <div className="choose-data">
         <p className="click-text" onClick={countryShowHandler}>Data by country</p>
         <p className="click-text" onClick={provinceShowHandler}>Data by province/state</p>
       </div>
-          <p className="date">Data for {new Date().getMonth() + 1}/{new Date().getDate() - 1}/{new Date().getFullYear()}</p>
+          {/* <p className="date">Data for {new Date().getMonth() + 1}/{new Date().getDate() - 1}/{new Date().getFullYear()}</p> */}
       {countryShow && 
       <div>
         <div className="table-row">
@@ -163,7 +166,7 @@ function CountryTable() {
                 </div>
                 <div className="data-wrap">
                   <p className="values">{country.confirmed}</p>
-                  <small>New cases: {country.newCases}</small>
+                  <small>New: {country.newCases}</small>
                 </div>
                 <div className="data-wrap">
                   <p className="values">{country.deaths}</p>
@@ -197,7 +200,7 @@ function CountryTable() {
                 </div>
                 <div className="data-wrap">
                   <p className="values">{country.confirmed}</p>
-                  <small>New cases: {country.newCases}</small>
+                  <small>New: {country.newCases}</small>
                 </div>
                 <div className="data-wrap">
                   <p className="values">{country.deaths}</p>
