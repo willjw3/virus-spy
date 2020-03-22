@@ -4,7 +4,7 @@ import Card from "../components/card";
 import CoronaData from "../covid19.json"
 import CovidCountryData from "../data/country/covid19.json";
 import CovidProvinceData from "../data/province/covid19.json";
-import WorldTotal from "../worldtotal.json"
+import WorldTotal from "../data/world/worldtotal.json"
 import '../styles/country-table.scss';
 
 function CountryTable() {
@@ -19,7 +19,7 @@ function CountryTable() {
   const [updated, setUpdated] = useState("");
   const [totalCases, setTotalCases] = useState("");
   const [totalDeaths, setTotalDeaths] = useState("");
-  //const [newCases, setNewCases] = useState("");
+  const [newCases, setNewCases] = useState("");
   //const [newDeaths, setNewDeaths] = useState("");
   const [recovered, setRecovered] = useState("");
   const [message, setMessage] = useState("");
@@ -82,6 +82,8 @@ function CountryTable() {
               setCountry(item.country);
               setTotalCases(item.confirmed);
               setTotalDeaths(item.deaths);
+              setUpdated(item.updated);
+              setNewCases(item.newCases);
           } else {
               setMessage("No data found for the search term you entered.")
           }
@@ -157,9 +159,11 @@ function CountryTable() {
               <div key={i} className="table-row">
                 <div className="data-wrap">
                   <p className="values">{country.country}</p>
+                  <small>{new Date().getMonth() + 1}/{new Date().getDate()}/{new Date().getFullYear()} (Tokyo: UTC + 9)</small>
                 </div>
                 <div className="data-wrap">
                   <p className="values">{country.confirmed}</p>
+                  <small>New cases: {country.newCases}</small>
                 </div>
                 <div className="data-wrap">
                   <p className="values">{country.deaths}</p>
@@ -186,12 +190,14 @@ function CountryTable() {
               <div key={i} className="table-row">
                 <div className="data-wrap">
                   <p className="values">{country.province}</p>
+                  <small>{new Date().getMonth() + 1}/{new Date().getDate()}/{new Date().getFullYear()} (Tokyo: UTC + 9)</small>
                 </div>
                 <div className="data-wrap">
                   <p className="values">{country.country}</p>
                 </div>
                 <div className="data-wrap">
                   <p className="values">{country.confirmed}</p>
+                  <small>New cases: {country.newCases}</small>
                 </div>
                 <div className="data-wrap">
                   <p className="values">{country.deaths}</p>
