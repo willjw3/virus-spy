@@ -2,7 +2,8 @@ const fetch = require("node-fetch");
 const fs = require("fs");
 
 const yesterdayCountryData = require("../src/data/country/history/covid19200320.json");
-const yesterdayProvinceData = require("../src/data/province/history/covid19200320.json")
+const yesterdayProvinceData = require("../src/data/province/history/covid19200320.json");
+const yesterdayWorldData = require("../src/data/world/history/worldtotal200320.json");
 const url = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-21-2020.csv";
 
 const getAllData = async () => {
@@ -181,10 +182,41 @@ const getWorldTotal = async() => {
         date: `${new Date().getMonth() + 1}/${new Date().getDate()}/${new Date().getFullYear()}`
     }
     worldData.push(worldTotal)
-    let worldDataArray = JSON.stringify(worldData)
-    fs.writeFileSync("src/data/world/worldtotal.json", worldDataArray)
-    fs.writeFileSync("src/data/world/history/worldtotal200321.json", worldDataArray)
+    // let worldDataArray = JSON.stringify(worldData)
+    // fs.writeFileSync("src/data/world/worldtotal.json", worldDataArray)
+    // fs.writeFileSync("src/data/world/history/worldtotal200321.json", worldDataArray)
+    return worldData
 }
+
+const makeWorldTotalFile = async () => {
+    let oldWorldData = await yesterdayWorldData;
+    let worldData = await getWorldTotal();
+    let worldCasesArray = [];
+    let stringyWorldCasesArray = [];
+    await worldData.forEach(day => {
+        let newCases = 0;
+        let newDeaths = 0;
+        try {
+            for (let total of oldWorldData) {
+                newCases = Number(day.totalConfirmedCases) - Number(total.totalConfirmedCases);
+                newDeaths = Number(day.totalDeaths) - Number(total.totalDeaths);
+            }
+        } catch {
+            console.log("Could not get world data");
+        }
+        worldCasesArray.push({
+            totalConfirmedCases: day.totalConfirmedCases,
+            totalDeaths: day.totalDeaths,
+            date: day.date,
+            newCases: newCases,
+            newDeaths: newDeaths
+        });
+    });
+    stringyWorldCasesArray = JSON.stringify(worldCasesArray);
+    fs.writeFileSync("src/data/world/worldtotal.json", stringyWorldCasesArray);
+    fs.writeFileSync("src/data/world/history/worldtotal200321.json", stringyWorldCasesArray);
+}
+
 const makeCountryDataFile = async () => {
     const oldCountryData = await yesterdayCountryData;
     const countries = await getCountryData();
@@ -192,10 +224,12 @@ const makeCountryDataFile = async () => {
     let stringyCountryCasesArray = [];
     await countries.forEach(nation => {
         let newCases = 0;
+        let newDeaths = 0;
         try {
             for (let country of oldCountryData) {
                 if (nation.country === country.country) {
-                    newCases = Number(nation.confirmed) - Number(country.confirmed)
+                    newCases = Number(nation.confirmed) - Number(country.confirmed);
+                    newDeaths = Number(nation.deaths) - Number(country.deaths)
                 }
             }
         } catch {
@@ -206,7 +240,8 @@ const makeCountryDataFile = async () => {
             confirmed: nation.confirmed,
             deaths: nation.deaths,
             updated: nation.updated,
-            newCases: newCases
+            newCases: newCases,
+            newDeaths: newDeaths
         })
     })
     stringyCountryCasesArray = JSON.stringify(countryCasesArray);
@@ -220,10 +255,12 @@ const makeProvinceDataFile = async () => {
     let stringyProvinceCasesArray = [];
     await provinces.forEach(province => {
         let newCases = 0;
+        let newDeaths = 0;
         try {
             for (let country of oldProvinceData) {
                 if (province.province === country.province) {
-                    newCases = Number(province.confirmed) - Number(country.confirmed)
+                    newCases = Number(province.confirmed) - Number(country.confirmed);
+                    newDeaths = Number(province.deaths) - Number(country.deaths);
                 }
             }
         } catch {
@@ -235,7 +272,8 @@ const makeProvinceDataFile = async () => {
             confirmed: province.confirmed,
             deaths: province.deaths,
             updated: province.updated,
-            newCases: newCases
+            newCases: newCases,
+            newDeaths: newDeaths
         })
     })
     stringyProvinceCasesArray = JSON.stringify(provinceCasesArray);
@@ -243,7 +281,7 @@ const makeProvinceDataFile = async () => {
     fs.writeFileSync("src/data/province/history/covid19200321.json", stringyProvinceCasesArray);
 }
 
-getWorldTotal();
+makeWorldTotalFile();
 makeCountryDataFile();
 makeProvinceDataFile();
 

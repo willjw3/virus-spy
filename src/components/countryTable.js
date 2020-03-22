@@ -96,11 +96,13 @@ function CountryTable() {
       <div className="totals">
         <div className="totals-wrap">
           <h3 className="world-total">Total Confirmed Cases Worldwide: <span className="total-number">{WorldTotal[0].totalConfirmedCases}</span></h3>
-          <small>{new Date().getMonth() + 1}/{new Date().getDate()}/{new Date().getFullYear()} (Tokyo: UTC + 9)</small>
+          <small><span>{WorldTotal[0].newCases}</span> new cases</small>
+          <small>{new Date().getMonth() + 1}/{new Date().getDate()}/{new Date().getFullYear()} (Tokyo)</small>
         </div>
         <div className="totals-wrap">
           <h3 className="world-total">Total Deaths Worldwide: <span className="total-number">{WorldTotal[0].totalDeaths}</span></h3>
-          <small>{new Date().getMonth() + 1}/{new Date().getDate()}/{new Date().getFullYear()} (Tokyo: UTC + 9)</small>
+          <small><span>{WorldTotal[0].newDeaths}</span> new deaths</small>
+          <small>{new Date().getMonth() + 1}/{new Date().getDate()}/{new Date().getFullYear()} (Tokyo)</small>
         </div> 
       </div>
       <div className="search">
@@ -162,14 +164,15 @@ function CountryTable() {
               <div key={i} className="table-row">
                 <div className="data-wrap">
                   <p className="values">{country.country}</p>
-                  <small>{new Date().getMonth() + 1}/{new Date().getDate()}/{new Date().getFullYear()} (Tokyo: UTC + 9)</small>
+                  <small>{new Date().getMonth() + 1}/{new Date().getDate()}/{new Date().getFullYear()} (Tokyo)</small>
                 </div>
                 <div className="data-wrap">
                   <p className="values">{country.confirmed}</p>
-                  <small>New: {country.newCases}</small>
+                  <small><span>{country.newCases}</span> new cases</small>
                 </div>
                 <div className="data-wrap">
                   <p className="values">{country.deaths}</p>
+                  <small><span>{country.newDeaths}</span> new deaths</small>
                 </div>
               </div>
               <hr className="table-line"/>
@@ -193,17 +196,18 @@ function CountryTable() {
               <div key={i} className="table-row">
                 <div className="data-wrap">
                   <p className="values">{country.province}</p>
-                  <small>{new Date().getMonth() + 1}/{new Date().getDate()}/{new Date().getFullYear()} (Tokyo: UTC + 9)</small>
+                  <small>{new Date().getMonth() + 1}/{new Date().getDate()}/{new Date().getFullYear()} (Tokyo)</small>
                 </div>
                 <div className="data-wrap">
                   <p className="values">{country.country}</p>
                 </div>
                 <div className="data-wrap">
                   <p className="values">{country.confirmed}</p>
-                  <small>New: {country.newCases}</small>
+                  <small><span>{country.newCases}</span> new cases</small>
                 </div>
                 <div className="data-wrap">
                   <p className="values">{country.deaths}</p>
+                  <small><span>{country.newDeaths}</span> new deaths</small>
                 </div>
               </div>
               <hr className="table-line"/>

@@ -39,6 +39,11 @@ justify-content: space-between;
 .data-wrap {
 width: 100%;
 text-align: center;
+    small {
+        span {
+            color: darkgray; 
+        }
+    }
 }
 .values {
 font-family: Rubik;
@@ -88,12 +93,21 @@ border: .5px dashed white;
 }
 .totals-wrap {
     text-align: center;
+    display: flex;
+    flex-direction: column;
+        small {
+            color: darkgray;
+                span {
+                    color: red;
+                }
+        }
 }
 .world-total {
     color: darkgray;
     font-family: Rubik;
     font-weight: 300;
     text-align: center;
+    padding-bottom: 5px;
 }
 .total-number {
     font-size: 1.5rem;
