@@ -2,7 +2,8 @@ import React, {useState} from 'react';
 import Card from "../components/card";
 import CovidCountryData from "../data/country/covid19.json";
 import CovidProvinceData from "../data/province/covid19.json";
-import WorldTotal from "../data/world/worldtotal.json"
+import WorldTotal from "../data/world/worldtotal.json";
+import Chart from "./chart";
 import '../styles/country-table.scss';
 
 function CountryTable() {
@@ -20,6 +21,9 @@ function CountryTable() {
   const [newDeaths, setNewDeaths] = useState("");
   const [message, setMessage] = useState("");
   const [show, setShow] = useState(false);
+
+  const countries = ["China", "US", "Italy"];
+  const cases = [8, 3, 5];
 
   const provinceSearchHandler = () => {
     setCountrySearch(false)

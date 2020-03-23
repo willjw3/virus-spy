@@ -1,0 +1,47 @@
+
+.chart-wrapper {
+    height: 100px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    color: white;
+    border-style: solid;
+    border-width: 5px;
+    border-color: white;
+    border-radius: 10px;
+    box-shadow: inset 1px 1px 5px;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    padding-left: 5%;
+    padding-right: 5%;
+    margin-top: 120px;
+}
+
+#canvas {
+    margin-top: 35px;
+}
+
+div.tooltip {	
+    position: absolute;			
+    text-align: center;			
+    width: 73px;					
+    height: 38px;					
+    padding: 2px;				
+    font: 12px sans-serif;		
+    background: lightsteelblue;
+    color: black;	
+    border: 0px;		
+    border-radius: 8px;			
+    pointer-events: none;			
+}
+
+.graph-title {
+    font-family: "Rubik";
+    font-size: 17px;
+}
+.graph-subtitle {
+    font-family: "Rubik";
+    font-size: 13px;
+    
+}
