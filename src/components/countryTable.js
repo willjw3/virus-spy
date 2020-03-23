@@ -14,12 +14,10 @@ function CountryTable() {
   const [provinceShow, setProvinceShow] = useState(true);
   const [province, setProvince] = useState("");
   const [country, setCountry] = useState("");
-  const [updated, setUpdated] = useState("");
   const [totalCases, setTotalCases] = useState("");
   const [totalDeaths, setTotalDeaths] = useState("");
   const [newCases, setNewCases] = useState("");
-  //const [newDeaths, setNewDeaths] = useState("");
-  const [recovered, setRecovered] = useState("");
+  const [newDeaths, setNewDeaths] = useState("");
   const [message, setMessage] = useState("");
   const [show, setShow] = useState(false);
 
@@ -63,6 +61,7 @@ function CountryTable() {
               setProvince(item.province);
               setCountry(item.country);
               setTotalCases(item.confirmed);
+              setNewCases(item.newCases);
               setTotalDeaths(item.deaths);
           } else {
               setMessage("No data found for the search term you entered.")
@@ -79,9 +78,9 @@ function CountryTable() {
               setMessage("");
               setCountry(item.country);
               setTotalCases(item.confirmed);
-              setTotalDeaths(item.deaths);
-              setUpdated(item.updated);
               setNewCases(item.newCases);
+              setTotalDeaths(item.deaths);
+              setNewDeaths(item.newDeaths)
           } else {
               setMessage("No data found for the search term you entered.")
           }
@@ -139,7 +138,9 @@ function CountryTable() {
               <h3>Province/State: {province ? province : "not given"}</h3>
               <h3>Country: {country}</h3>
               <p>Total cases: {totalCases}</p>
+              <p>New cases: {newCases}</p>
               <p>Total deaths: {totalDeaths}</p>
+              <p>New deaths: {newDeaths}</p>
           </div>
           }
           {!country && <div>{message}</div> }
@@ -149,7 +150,6 @@ function CountryTable() {
         <p className="click-text" onClick={countryShowHandler}>Data by country</p>
         <p className="click-text" onClick={provinceShowHandler}>Data by province/state</p>
       </div>
-          {/* <p className="date">Data for {new Date().getMonth() + 1}/{new Date().getDate() - 1}/{new Date().getFullYear()}</p> */}
       {countryShow && 
       <div>
         <div className="table-row">
