@@ -1,10 +1,10 @@
 const fetch = require("node-fetch");
 const fs = require("fs");
 
-const yesterdayCountryData = require("../src/data/country/history/covid19200321.json");
-const yesterdayProvinceData = require("../src/data/province/history/covid19200321.json");
-const yesterdayWorldData = require("../src/data/world/history/worldtotal200321.json");
-const url = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-22-2020.csv";
+const yesterdayCountryData = require("../src/data/country/history/covid19200322.json");
+const yesterdayProvinceData = require("../src/data/province/history/covid19200322.json");
+const yesterdayWorldData = require("../src/data/world/history/worldtotal200322.json");
+const url = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-23-2020.csv";
 
 const getAllData = async () => {
     let covid19Data = [];
@@ -17,30 +17,34 @@ const getAllData = async () => {
             await rows.forEach((row) => {
                 let countryData = {};
                 let datestring;
-                let country = row.split(",");
-                if (row.split(",").length === 8) {
-                    datestring = country[2].split("T")[0]
+                let country = row.split(",").slice(0,11);
+                if (!country[3].includes('"')) {
+                    datestring = country[4].split("T")[0]
                     countryData = {
-                        province: country[0],
-                        country: country[1],
+                        fips: country[0],
+                        admin: country[1],
+                        province: country[2],
+                        country: country[3],
                         updated: datestring,
-                        confirmed: country[3],
-                        deaths: country[4],
-                        recovered: country[5],
-                        latitude: country[6],
-                        longitude: country[7]
+                        confirmed: country[7],
+                        deaths: country[8],
+                        recovered: country[9],
+                        latitude: country[5],
+                        longitude: country[6]
                     }
                 } else {
-                    datestring = country[3].split("T")[0]
+                    datestring = country[5].split("T")[0]
                     countryData = {
-                        province: country[0],
-                        country: `${country[1].replace(/"/, "")}, ${country[2].replace(/"/, "")}`,
+                        fips: country[0],
+                        admin: country[1],
+                        province: country[2],
+                        country: `${country[3].replace(/"/, "")}, ${country[4].replace(/"/, "")}`,
                         updated: datestring,
-                        confirmed: country[4],
-                        deaths: country[5],
-                        recovered: country[6],
-                        latitude: country[7],
-                        longitude: country[8]
+                        confirmed: country[8],
+                        deaths: country[9],
+                        recovered: country[10],
+                        latitude: country[6],
+                        longitude: country[7]
                     }
                 }
                 
@@ -52,7 +56,7 @@ const getAllData = async () => {
         
         covid19DataArray = await JSON.stringify(covid19Data);
         await fs.writeFileSync("src/data/all/covid19.json", covid19DataArray);  
-        await fs.writeFileSync("src/data/all/history/covid19200322.json", covid19DataArray);  
+        await fs.writeFileSync("src/data/all/history/covid19200323.json", covid19DataArray); 
     })
     return covid19Data
 }
@@ -66,13 +70,13 @@ const getCountryList = async () => {
         try {
             await rows.forEach((row, i) => {
                 let country = row.split(",");
-                if (row.split(",").length === 8) {
-                    if (!countries.includes(country[1])) {
-                        countries.push(country[1])
+                if (!country[3].includes('"')) {
+                    if (!countries.includes(country[3])) {
+                        countries.push(country[3])
                     }
                 } else {
-                    if (!countries.includes(`${country[1].replace(/"/, "")}, ${country[2].replace(/"/, "")}`)) {
-                        countries.push(`${country[1].replace(/"/, "")}, ${country[2].replace(/"/, "")}`)
+                    if (!countries.includes(`${country[3].replace(/"/, "")}, ${country[4].replace(/"/, "")}`)) {
+                        countries.push(`${country[3].replace(/"/, "")}, ${country[4].replace(/"/, "")}`)
                     }    
                 }
             })
@@ -91,9 +95,9 @@ const getProvinceList = async () => {
         try {
             await rows.forEach((row, i) => {
                 let country = row.split(",");
-                if (country[0] !== "") {
-                    if (!provinces.includes(country[0])) {
-                        provinces.push(country[0])
+                if (country[2] !== "") {
+                    if (!provinces.includes(country[2])) {
+                        provinces.push(country[2])
                     }
                 } 
             })
@@ -214,7 +218,7 @@ const makeWorldTotalFile = async () => {
     });
     stringyWorldCasesArray = JSON.stringify(worldCasesArray);
     fs.writeFileSync("src/data/world/worldtotal.json", stringyWorldCasesArray);
-    fs.writeFileSync("src/data/world/history/worldtotal200322.json", stringyWorldCasesArray);
+    fs.writeFileSync("src/data/world/history/worldtotal200323.json", stringyWorldCasesArray);
 }
 
 const makeCountryDataFile = async () => {
@@ -246,7 +250,7 @@ const makeCountryDataFile = async () => {
     })
     stringyCountryCasesArray = JSON.stringify(countryCasesArray);
     fs.writeFileSync("src/data/country/covid19.json", stringyCountryCasesArray);    
-    fs.writeFileSync("src/data/country/history/covid19200322.json", stringyCountryCasesArray);
+    fs.writeFileSync("src/data/country/history/covid19200323.json", stringyCountryCasesArray);
 }
 const makeProvinceDataFile = async () => {
     const oldProvinceData = await yesterdayProvinceData;
@@ -278,10 +282,11 @@ const makeProvinceDataFile = async () => {
     })
     stringyProvinceCasesArray = JSON.stringify(provinceCasesArray);
     fs.writeFileSync("src/data/province/covid19.json", stringyProvinceCasesArray);    
-    fs.writeFileSync("src/data/province/history/covid19200322.json", stringyProvinceCasesArray);
+    fs.writeFileSync("src/data/province/history/covid19200323.json", stringyProvinceCasesArray);
 }
 
 makeWorldTotalFile();
 makeCountryDataFile();
 makeProvinceDataFile();
+
 
