@@ -110,7 +110,7 @@ function CountryTable() {
       </div>
       <div className="search">
         <p>Search by:</p>
-        <p className="click-text" value={`province`} onClick={provinceSearchHandler}>province/state</p>
+        {/* <p className="click-text" value={`province`} onClick={provinceSearchHandler}>province/state</p> */}
         <p className="click-text" value={`country`} onClick={countrySearchHandler}>country</p>
       </div>
       {provinceSearch && 
