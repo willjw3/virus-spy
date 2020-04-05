@@ -23,15 +23,15 @@ function CountryTable() {
   const [message, setMessage] = useState("");
   const [show, setShow] = useState(false);
 
-  const dates = WorldChartData.map(date => {
-    return date.date; 
-  });
-  const cases = WorldChartData.map(date => {
-    return Number(date.cases);
-  });
-  const deaths = WorldChartData.map(date => {
-    return Number(date.deaths);
-  });
+  // const dates = WorldChartData.map(date => {
+  //   return date.date; 
+  // });
+  // const cases = WorldChartData.map(date => {
+  //   return Number(date.cases);
+  // });
+  // const deaths = WorldChartData.map(date => {
+  //   return Number(date.deaths);
+  // });
   
   const provinceSearchHandler = () => {
     setCountrySearch(false)
@@ -104,7 +104,7 @@ function CountryTable() {
 
   return (
     <div className="country-table">
-      <div className="totals">
+      {/* <div className="totals">
         <div className="totals-wrap">
           <h3 className="world-total">Total Confirmed Cases Worldwide: <span className="total-number">{WorldTotal[0].totalConfirmedCases}</span></h3>
           <small><span>{WorldTotal[0].newCases}</span> new cases</small>
@@ -115,7 +115,7 @@ function CountryTable() {
           <small><span>{WorldTotal[0].newDeaths}</span> new deaths</small>
           <small>{new Date().getMonth() + 1}/{new Date().getDate()}/{new Date().getFullYear()} (Tokyo)</small>
         </div> 
-      </div>
+      </div> */}
       
       <Card show={show} handleClose={hideDataCard}>
           {country && <div>
@@ -130,7 +130,7 @@ function CountryTable() {
           {!country && <div>{message}</div> } 
       </Card>
 
-      <div className="chart-wrapper">
+      {/* <div className="chart-wrapper">
         <div className="chart-box">
           <Chart 
             xdata={dates} 
@@ -151,7 +151,7 @@ function CountryTable() {
             ytext="Number of Deaths" 
           />
         </div>
-      </div>
+      </div> */}
       <div className="search">
         <p>Search by:</p>
         {/* <p className="click-text" value={`province`} onClick={provinceSearchHandler}>province/state</p> */}

@@ -2,6 +2,7 @@
     position: relative;
     display: flex;
     justify-content: space-between;
+    width: 100%;
     padding: 0 5px;
     color: white;
     background: black;
@@ -46,4 +47,16 @@
     height: 20px;
     background: red;
     margin-left: 5px;
+}
+
+@media only screen and (max-width: 500px) {
+    .legend {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 2px;
+        font-size: .75rem;
+    }
+    .legend-color1, .legend-color2, .legend-color3, .legend-color4, .legend-color5, .legend-color6 {
+        margin-left: 1px;
+    }
 }
