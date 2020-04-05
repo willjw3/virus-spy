@@ -20,6 +20,7 @@ const getWorldData = async () => {
                     date: date,
                     id: id
                 }
+                console.log(dayData)
                 datalist.push(dayData);
                 if (i === files.length - 1) {
                     //console.log(new Date(datalist[0].date).getTime() / 1000)

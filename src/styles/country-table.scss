@@ -21,7 +21,6 @@ button {
 
 .country-table {
     padding: 20px 0;
-    text-align: center;
 }
   
 hr {
@@ -151,6 +150,10 @@ border: .5px dashed white;
     }
     .chart-wrapper {
         flex-direction: column;
+    }
+    .chart-box {
+        width: 350px;
+        margin: auto;
     }
 }
 

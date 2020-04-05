@@ -130,7 +130,7 @@ function CountryTable() {
           {!country && <div>{message}</div> } 
       </Card>
 
-      {/* <div className="chart-wrapper">
+      <div className="chart-wrapper">
         <div className="chart-box">
           <Chart 
             xdata={dates} 
@@ -151,7 +151,7 @@ function CountryTable() {
             ytext="Number of Deaths" 
           />
         </div>
-      </div> */}
+      </div>
       <div className="search">
         <p>Search by:</p>
         {/* <p className="click-text" value={`province`} onClick={provinceSearchHandler}>province/state</p> */}
