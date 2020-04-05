@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import Card from "../components/card";
 import CovidCountryData from "../data/country/covid19.json";
 import CovidProvinceData from "../data/province/covid19.json";
+import WorldChartData from "../data/chart/chartdata.json"
 import WorldTotal from "../data/world/worldtotal.json";
 import Chart from "./chart";
 import '../styles/country-table.scss';
@@ -22,9 +23,16 @@ function CountryTable() {
   const [message, setMessage] = useState("");
   const [show, setShow] = useState(false);
 
-  const countries = ["China", "US", "Italy"];
-  const cases = [8, 3, 5];
-
+  const dates = WorldChartData.map(date => {
+    return date.date; 
+  });
+  const cases = WorldChartData.map(date => {
+    return Number(date.cases);
+  });
+  const deaths = WorldChartData.map(date => {
+    return Number(date.deaths);
+  });
+  
   const provinceSearchHandler = () => {
     setCountrySearch(false)
     setProvinceSearch(true)
@@ -108,6 +116,42 @@ function CountryTable() {
           <small>{new Date().getMonth() + 1}/{new Date().getDate()}/{new Date().getFullYear()} (Tokyo)</small>
         </div> 
       </div>
+      
+      <Card show={show} handleClose={hideDataCard}>
+          {country && <div>
+              <h3>Province/State: {province ? province : "not given"}</h3>
+              <h3>Country: {country}</h3>
+              <p>Total cases: {totalCases}</p>
+              <p>New cases: {newCases}</p>
+              <p>Total deaths: {totalDeaths}</p>
+              <p>New deaths: {newDeaths}</p>
+          </div>
+          }
+          {!country && <div>{message}</div> } 
+      </Card>
+
+      {/* <div className="chart-wrapper">
+        <div className="chart-box">
+          <Chart 
+            xdata={dates} 
+            ydata={cases} 
+            setMin={[true, 0]} 
+            color="yellow"
+            xtext="Date"
+            ytext="Number of Cases" 
+          />
+        </div>
+        <div className="chart-box">
+          <Chart 
+            xdata={dates} 
+            ydata={deaths} 
+            setMin={[true, 0]} 
+            color="red"
+            xtext="Date"
+            ytext="Number of Deaths" 
+          />
+        </div>
+      </div> */}
       <div className="search">
         <p>Search by:</p>
         {/* <p className="click-text" value={`province`} onClick={provinceSearchHandler}>province/state</p> */}
@@ -137,19 +181,6 @@ function CountryTable() {
           <button type="submit">Submit</button>
         </form>
       }
-      <Card show={show} handleClose={hideDataCard}>
-          {country && <div>
-              <h3>Province/State: {province ? province : "not given"}</h3>
-              <h3>Country: {country}</h3>
-              <p>Total cases: {totalCases}</p>
-              <p>New cases: {newCases}</p>
-              <p>Total deaths: {totalDeaths}</p>
-              <p>New deaths: {newDeaths}</p>
-          </div>
-          }
-          {!country && <div>{message}</div> }
-          
-      </Card>
       <div className="choose-data">
         <p className="click-text" onClick={countryShowHandler}>Data by country</p>
         <p className="click-text" onClick={provinceShowHandler}>Data by province/state</p>

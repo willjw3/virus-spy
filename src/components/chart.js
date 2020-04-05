@@ -2,126 +2,138 @@ import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import "../styles/chart.scss"
 
-const Chart = (props) => {
+const Chart = ({xdata, ydata, setMin, color, xtext, ytext}) => {
     const canvas = useRef(null);
-
+    
     useEffect(() => {
-        const cases = props.cases;
-        const countries = props.countries;
-        cases.length && drawBarChart(cases, countries)
-    }, [props.cases, props.countries])
+        const hdata = xdata;
+        const vdata = ydata;
+        const htext = xtext;
+        const vtext = ytext;
+        const fillColor = color; 
+        const minVal = setMin[0] === true ? setMin[1] : d3.min(vdata)
+        vdata.length && drawBarChart(hdata, vdata, minVal, fillColor, htext, vtext)
+    }, [xdata, ydata, setMin, color, xtext, ytext])
 
-    const drawBarChart = (cases, countries) => {
-        const margin = { top: 30, bottom: 30, left: 30, right: 30},
-        width = 400,
-        height = 200;
+    const drawBarChart = (hdata, vdata, minVal, fillColor, htext, vtext) => {
+        const width = 600;
+        const height = 300;
+        const margin = {
+            left: 90,
+            right: 60,
+            top: 90,
+            bottom: 90
+        }
 
-        d3.select("svg").remove();
-
-        const div = d3.select(canvas.current).append("div")
-                    .attr("id", "tooltip")
-                    .attr("class", "tooltip")
-                    .style("opacity", 0);
+        var div = d3.select(canvas.current).append("div")
+            .attr("id", "tooltip")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
         
         const svg = d3.select(canvas.current)
-                    .append("svg")
-                    .attr("width", "100%")
-                    .attr("height", "100%")
-                    .attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom))
-                    .attr('preserveAspectRatio', 'xMinYMin')
+            .append("svg")
+            .attr("width", '100%')
+            .attr("height", '100%')
+            .attr('viewBox', '0 0 ' + (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom))
+            .attr('preserveAspectRatio', 'xMinYMin')
 
         const xscale = d3.scaleBand()
-                    .domain(countries)
-                    .range([0, width])
-                    .padding("10px")
-
+            .domain(hdata)
+            .range([0, width])
+            .padding(0.1);
+        
         const xAxis = d3.axisBottom(xscale);
 
+        const bartop = margin.top/2 + 5
+        const barbase = height + bartop
         svg.append('g')
             .call(xAxis)
             .attr('id', 'x-axis')
-            .attr('transform', 'translate(60, 280)');
-        
-        svg.append('text')
-            .attr("x", 225)
-            .attr("y", 320)
-            .attr("fill", "yellow")
-            .text("Country");
+            .style("color", "white")
+            .attr('transform', 'translate(' + margin.left + ',' + barbase + ')')
+            .selectAll("text")
+            .style("color", "white")
+            .style("font", "11px Rubik")
+            .attr("y", 0)
+            .attr("x", 40)
+            .attr("transform", "rotate(90)")
+            ;
+            
+            svg.append('text')
+            .attr("x", width/1.75)
+            .attr("y", (height + margin.top) + 60)
+            .attr("fill", `${fillColor}`)
+            .text(htext)
 
         const linearScale = d3.scaleLinear()
-            .domain([d3.min(cases), d3.max(cases)])
+            .domain([minVal, d3.max(vdata)])
             .range([0, height]);
         
-        const scaledVals = cases.map(function (item) {
-                return linearScale(item);
-            });
+        const scaledVals = vdata.map(function (item) {
+            return linearScale(item);
+        });
         
         const yscale = d3.scaleLinear()
-            .domain([d3.min(cases), d3.max(cases)])
+            .domain([minVal, d3.max(vdata)])
             .range([height, 0]);
-
-        const yAxis = d3.axisLeft(yscale)
+    
+        const yAxis = d3.axisLeft(yscale);
 
         svg.append('g')
             .call(yAxis)
             .attr('id', 'y-axis')
-            .attr('transform', 'translate(60, 30)');
+            .style("color", "white")
+            .attr('transform', 'translate(' + margin.left + ',' + bartop + ')');
+
+            svg.append('text')
+            .attr("x", -height/1.15)
+            .attr("y", 30)
+            .attr("fill", `${fillColor}`)
+            .text(vtext)
+            .attr("transform", "rotate(-90)")
         
-        svg.append('text')
-            .attr('transform', 'rotate(-90)')
-            .attr('x', -230)
-            .attr('y', 15)
-            .attr("fill", "yellow")
-            .text('Confirmed Cases');
-
-        svg.append("text")
-            .attr("x", 110)
-            .attr("y", 15)
-            .attr("class", "graph-title")
-            .attr("fill", "white")
-            .text(`Covid-19 Cases by Country`)
-        // svg.append("text")
-        //     .attr("x", 200)
-        //     .attr("y", 35)
-        //     .attr("class", "graph-subtitle")
-        //     .attr("fill", "white")
-        //     .text("Average Annual Temperature")
-
-        svg.selectAll('rect')
+            svg.selectAll('rect')
             .data(scaledVals)
             .enter()
             .append('rect')
             .attr('width', xscale.bandwidth())
             .attr('height', function (d) {
-                return d;
+                return d
             })
-            .attr('fill', 'gold')
+            .attr("stroke", "black")
+            .attr("stroke-width", "0.25")
+            .attr('fill', `${fillColor}`)
             .attr('x', function (d, i) {
-                return xscale(countries[i]) + 60;
+                return xscale(hdata[i]) + margin.left;
             })
             .attr('y', function (d, i) {
-                return height - d + 30;
+                return height - d + bartop
             })
             .on("mouseover", (d, i) => {
                 div.transition()
                 .duration(200)
-                .style("opacity", 0.9)
-                div.html("Country: " + countries[i] + "<br>" + "Cases: " + cases[i] + "&#176;C")
-                .style('left', (d3.event.pageX - 18) + 'px')
-                .style('top', (d3.event.pageY - 44) + 'px')
+                .style("width", "100px")
+                .style("height", "50px")
+                .style("opacity", ".7")
+                .style("color", "black")
+                .style("background", "lightsteelblue")
+                div.html(htext + ": " + hdata[i] + "<br>" + vtext + ": " + vdata[i])
+                .style('left', (d3.event.pageX) + 'px')
+                .style('top', (d3.event.pageY) + 'px')
             })
             .on("mouseout", function (d) {
                 div.transition()
                     .duration(200)
                     .style("opacity", 0);
             });
-
-
     }
+
     return (
-        <div className="chart-wrapper">
-            <div id="canvas" ref={canvas}></div>
-        </div> 
+        <div className="discrete-chart">
+            <div className="canvas" ref={canvas}>  
+            </div>
+        </div>
+        
     )
 }
 

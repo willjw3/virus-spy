@@ -1,10 +1,10 @@
 const fetch = require("node-fetch");
 const fs = require("fs");
 
-const yesterdayCountryData = require("../src/data/country/history/covid19200402.json");
-const yesterdayProvinceData = require("../src/data/province/history/covid19200402.json");
-const yesterdayWorldData = require("../src/data/world/history/worldtotal200402.json");
-const url = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/04-03-2020.csv";
+const yesterdayCountryData = require("../src/data/country/history/covid19200403.json");
+const yesterdayProvinceData = require("../src/data/province/history/covid19200403.json");
+const yesterdayWorldData = require("../src/data/world/history/worldtotal200403.json");
+const url = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/04-04-2020.csv";
 
 const getAllData = async () => {
     let covid19Data = [];
@@ -56,7 +56,7 @@ const getAllData = async () => {
         
         covid19DataArray = await JSON.stringify(covid19Data);
         await fs.writeFileSync("src/data/all/covid19.json", covid19DataArray);  
-        await fs.writeFileSync("src/data/all/history/covid19200403.json", covid19DataArray); 
+        await fs.writeFileSync("src/data/all/history/covid19200404.json", covid19DataArray); 
     })
     return covid19Data
 }
@@ -218,7 +218,7 @@ const makeWorldTotalFile = async () => {
     });
     stringyWorldCasesArray = JSON.stringify(worldCasesArray);
     fs.writeFileSync("src/data/world/worldtotal.json", stringyWorldCasesArray);
-    fs.writeFileSync("src/data/world/history/worldtotal200403.json", stringyWorldCasesArray);
+    fs.writeFileSync("src/data/world/history/worldtotal200404.json", stringyWorldCasesArray);
 }
 
 const makeCountryDataFile = async () => {
@@ -250,7 +250,7 @@ const makeCountryDataFile = async () => {
     })
     stringyCountryCasesArray = JSON.stringify(countryCasesArray);
     fs.writeFileSync("src/data/country/covid19.json", stringyCountryCasesArray);    
-    fs.writeFileSync("src/data/country/history/covid19200403.json", stringyCountryCasesArray);
+    fs.writeFileSync("src/data/country/history/covid19200404.json", stringyCountryCasesArray);
 }
 const makeProvinceDataFile = async () => {
     const oldProvinceData = await yesterdayProvinceData;
@@ -282,7 +282,7 @@ const makeProvinceDataFile = async () => {
     })
     stringyProvinceCasesArray = JSON.stringify(provinceCasesArray);
     fs.writeFileSync("src/data/province/covid19.json", stringyProvinceCasesArray);    
-    fs.writeFileSync("src/data/province/history/covid19200403.json", stringyProvinceCasesArray);
+    fs.writeFileSync("src/data/province/history/covid19200404.json", stringyProvinceCasesArray);
 }
 
 makeWorldTotalFile();
