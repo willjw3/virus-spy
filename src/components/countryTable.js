@@ -22,16 +22,6 @@ function CountryTable() {
   const [newDeaths, setNewDeaths] = useState("");
   const [message, setMessage] = useState("");
   const [show, setShow] = useState(false);
-
-  // const dates = WorldChartData.map(date => {
-  //   return date.date; 
-  // });
-  // const cases = WorldChartData.map(date => {
-  //   return Number(date.cases);
-  // });
-  // const deaths = WorldChartData.map(date => {
-  //   return Number(date.deaths);
-  // });
   
   const provinceSearchHandler = () => {
     setCountrySearch(false)
@@ -104,19 +94,6 @@ function CountryTable() {
 
   return (
     <div className="country-table">
-      {/* <div className="totals">
-        <div className="totals-wrap">
-          <h3 className="world-total">Total Confirmed Cases Worldwide: <span className="total-number">{WorldTotal[0].totalConfirmedCases}</span></h3>
-          <small><span>{WorldTotal[0].newCases}</span> new cases</small>
-          <small>{new Date().getMonth() + 1}/{new Date().getDate()}/{new Date().getFullYear()} (Tokyo)</small>
-        </div>
-        <div className="totals-wrap">
-          <h3 className="world-total">Total Deaths Worldwide: <span className="total-number">{WorldTotal[0].totalDeaths}</span></h3>
-          <small><span>{WorldTotal[0].newDeaths}</span> new deaths</small>
-          <small>{new Date().getMonth() + 1}/{new Date().getDate()}/{new Date().getFullYear()} (Tokyo)</small>
-        </div> 
-      </div> */}
-      
       <Card show={show} handleClose={hideDataCard}>
           {country && <div>
               <h3>Province/State: {province ? province : "not given"}</h3>
@@ -129,32 +106,8 @@ function CountryTable() {
           }
           {!country && <div>{message}</div> } 
       </Card>
-
-      {/* <div className="chart-wrapper">
-        <div className="chart-box">
-          <Chart 
-            xdata={dates} 
-            ydata={cases} 
-            setMin={[true, 0]} 
-            color="yellow"
-            xtext="Date"
-            ytext="Number of Cases" 
-          />
-        </div>
-        <div className="chart-box">
-          <Chart 
-            xdata={dates} 
-            ydata={deaths} 
-            setMin={[true, 0]} 
-            color="red"
-            xtext="Date"
-            ytext="Number of Deaths" 
-          />
-        </div>
-      </div> */}
       <div className="search">
         <p>Search by:</p>
-        {/* <p className="click-text" value={`province`} onClick={provinceSearchHandler}>province/state</p> */}
         <p className="click-text" value={`country`} onClick={countrySearchHandler}>country</p>
       </div>
       {provinceSearch && 

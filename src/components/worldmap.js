@@ -17,24 +17,15 @@ const WorldMap = () => {
   console.log("/world-110m.json")
   useEffect(() => {
     fetch("/world-110m.json").then(response => {
-      // if (response !== 200) {
-      //   console.log(`There was a problem: ${response.status}`);
-      //   return;
-      // }
+
       response.json().then(worlddata => {
-        // this.setState({
-        //     worlddata: feature(worlddata, worlddata.objects.countries1)
-        //         .features
-        // });
         setWorlddata(feature(worlddata, worlddata.objects.countries).features)
-        let data = worlddata.objects.countries.geometries
+        // let data = worlddata.objects.countries.geometries
         //console.log(data)
       });
     })
   }, [])
-  // worlddata.forEach(country => {
-  //   console.log(country.properties.name)
-  // })
+
   const handleCountryHover = (i) => {
     if (i === isActive) {
       setIsActive(null);
