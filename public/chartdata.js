@@ -9,11 +9,11 @@ const getWorldData = async () => {
         if (err) console.log("Failed to get world data")
         await files.forEach((file, i) => {
             let dayData;
-            fs.readFile(`${dirPath}/${file}`, "utf8", (err, contents) => {
-                const cases = contents.split(",")[0].split(":")[1];
-                const deaths = contents.split(",")[1].split(":")[1];
-                const date = contents.split(",")[2].split(":")[1].replace(/}]/, "").replace(/"/g, "");
-                const id = new Date(date).getTime() / 1000;
+            fs.readFile(`${dirPath}/${file}`, "utf8", async (err, contents) => {
+                const cases = await contents.split(",")[0].split(":")[1];
+                const deaths = await contents.split(",")[1].split(":")[1];
+                const date = await contents.split(",")[2].split(":")[1].replace(/}]/, "").replace(/"/g, "");
+                const id = await new Date(date).getTime() / 1000;
                 dayData = {
                     cases: cases,
                     deaths: deaths,
@@ -21,13 +21,13 @@ const getWorldData = async () => {
                     id: id
                 }
                 console.log(dayData)
-                datalist.push(dayData);
+                await datalist.push(dayData);
                 if (i === files.length - 1) {
                     //console.log(new Date(datalist[0].date).getTime() / 1000)
-                    const sortedList = datalist.sort((a,b) => {
+                    const sortedList = await datalist.sort((a,b) => {
                         return a.id > b.id ? 1 : -1;
                     });
-                    let data = JSON.stringify(sortedList);
+                    let data = await JSON.stringify(sortedList);
                     fs.writeFileSync("src/data/chart/chartdata.json", data)
                 }
             })
