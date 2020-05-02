@@ -53,11 +53,15 @@ const Chart = ({xdata, ydata, setMin, color, xtext, ytext}) => {
             .attr('transform', 'translate(' + margin.left + ',' + barbase + ')')
             .selectAll("text")
             .style("color", "white")
-            .style("font", "11px Rubik")
+            .style("font", "10px Rubik")
             .attr("y", 0)
             .attr("x", 40)
             .attr("transform", "rotate(90)")
             ;
+            var ticks = d3.selectAll(".tick text")
+            ticks.style("display", (d, i) => {
+                return i%2 ? "none" : "initial"
+            })
             
             svg.append('text')
             .attr("x", width/1.75)
